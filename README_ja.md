@@ -10,7 +10,7 @@ pipを用いてインストール:
 pip install git+https://github.com/kosuke1701/AnimeCV.git
 ```
 
-## 実装されている昨日
+## 実装されている機能
 
 ### キャラクター認識
 
