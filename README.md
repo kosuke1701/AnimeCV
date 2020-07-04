@@ -1,6 +1,6 @@
 # AnimeCV
 
-Pretrained computer vision tools for anime style illustrations.
+Pretrained computer vision tools for anime style illustrations. [日本語README](README_ja.md)
 
 ## Getting started
 
