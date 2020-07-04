@@ -1,0 +1,2 @@
+from .efficientdet_detector import YetAnotherEfficientDetDetector
+from .face_detector import FaceDetector_EfficientDet

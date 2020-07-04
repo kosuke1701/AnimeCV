@@ -1,6 +1,7 @@
 from setuptools import setup, find_namespace_packages
 
-requirements = """numpy
+requirements = """bounding-box
+numpy
 opencv-python
 pillow
 pycocotools
