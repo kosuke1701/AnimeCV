@@ -1,0 +1,3 @@
+[submodule "src/animecv/effdet"]
+	path = src/animecv/effdet
+	url = https://github.com/kosuke1701/Yet-Another-EfficientDet-Pytorch.git
