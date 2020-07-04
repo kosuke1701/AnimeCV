@@ -1,10 +1,16 @@
 from setuptools import setup, find_namespace_packages
 
 requirements = """numpy
+opencv-python
 pillow
+pycocotools
+pyyaml
 requests
 torch
 torchvision
+tensorboardX
+tqdm
+webcolors
 """
 
 setup(
