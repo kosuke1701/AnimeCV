@@ -1,4 +1,5 @@
 import torch
+from torchvision.transforms.functional import crop
 
 class ImageEncoder(object):
     def __init__(self, torch_model, transform=None, batch_size=100):
@@ -46,5 +47,56 @@ class ImageEncoder(object):
     
     def to(self, device):
         self.model.to(device)
+
+class ImageBBEncoder(ImageEncoder):
+    def __init__(self, torch_model, post_trans=None, scale=1.0, 
+        batch_size=100):
+        super().__init__(torch_model, None, batch_size)
+
+        self.post_trans = post_trans
+        self.scale = scale
+
+    def _rescale_bbox(self, xmin, ymin, xmax, ymax):
+        xcenter = (xmin + xmax) / 2
+        xwid = xmax - xmin
+        ycenter = (ymin + ymax) / 2
+        ywid = ymax - ymin
+
+        new_bbox = [
+            xcenter - xwid/2*self.scale,
+            ycenter - ywid/2*self.scale,
+            xcenter + xwid/2*self.scale,
+            ycenter + ywid/2*self.scale
+        ]
+        return list(map(int, new_bbox))
+    
+    def _crop_bounding_box(self, images, bboxs):
+        crop_imgs = []
+        lst_i_img = []
+        lst_i_bbox = []
+        for i_img, img_bboxs in enumerate(bboxs):
+            image = images[i_img]
+            for i_bbox, bbox in enumerate(img_bboxs):
+                coord = bbox["coordinates"]
+                xmin, ymin, xmax, ymax = self._rescale_bbox(*coord)
+
+                crop_img = crop(image, ymin, xmin, ymax-ymin, xmax-xmin)
+                if self.post_trans is not None:
+                    crop_img = self.post_trans(crop_img)
+
+                crop_imgs.append(crop_img)
+                lst_i_img.append(i_img)
+                lst_i_bbox.append(i_bbox)
         
+        crop_imgs = [img.unsqueeze(0) for img in crop_imgs]
+        crop_imgs = torch.cat(crop_imgs, dim=0)
+
+        return crop_imgs, lst_i_img, lst_i_bbox
+    
+    def encode(self, images, bboxs):
+        img_tensors, lst_i_img, lst_i_bbox = \
+            self._crop_bounding_box(images, bboxs)
         
+        embs = self._get_embedding(img_tensors)
+
+        return embs, lst_i_img, lst_i_bbox

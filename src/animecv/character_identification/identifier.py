@@ -52,3 +52,19 @@ class ImageCharacterIdentifier(object):
     
     def to(self, device):
         self.encoder.to(device)
+
+class ImageCharacterIdentifierBBox(ImageCharacterIdentifier):
+    def __init__(self, encoder, similarity):
+        super().__init__(encoder, similarity)
+
+    def encode_image(self, images, bboxs):
+        embs, lst_i_img, lst_i_bbox = self.encoder.encode(images, bboxs)
+        return embs, lst_i_img, lst_i_bbox
+    
+    def identify_bbox(self, target_embeddings, target_bboxs,
+        lst_i_img, lst_i_bbox, character_embeddings, mode):
+        scores = self.identify(target_embeddings, character_embeddings, mode)
+
+        for i_target, i_img, i_bbox in \
+            zip(range(target_embeddings.size(0)), lst_i_img, lst_i_bbox):
+            target_bboxs[i_img][i_bbox]["identification_score"] = scores[i_target]
