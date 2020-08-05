@@ -7,7 +7,7 @@ from PIL import Image
 from .display import from_cv_to_PIL
 
 IMAGE_EXTENSIONS = ["jpg", "png"]
-def get_all_image_filenames_from_directory(self, directory):
+def get_all_image_filenames_from_directory(directory):
     all_dir_files = glob.glob(os.path.join(directory, "**", "*")) + \
         glob.glob(os.path.join(directory, "*"))
     image_files = [fn for fn in all_dir_files 
@@ -30,6 +30,10 @@ def load_video(filename):
     if not cap.isOpened():
         raise Exception(f"Cannot open video: {filename}")
 
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    frame_rate = int(cap.get(cv2.CAP_PROP_FPS))
+
     frames = []
     while cap.isOpened():
         ret, frame = cap.read()
@@ -39,4 +43,4 @@ def load_video(filename):
             break
     
     cap.release()
-    return frames
+    return frames, (width, height, frame_rate)

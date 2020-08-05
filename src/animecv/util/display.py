@@ -32,3 +32,10 @@ def add_bounding_box(image, bb_info):
 def write_image(image, path):
     if isinstance(image, np.ndarray):
         cv2.imwrite(path, image)
+
+def write_mp4_video(images, filename, frame_rate=24.0, size=(640, 480)):
+    fmt = cv2.VideoWriter_fourcc("m", "p", "4", "v")
+    writer = cv2.VideoWriter(filename, fmt, frame_rate, size)
+    for frame in images:
+        writer.write(frame)
+    writer.release()

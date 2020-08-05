@@ -1,11 +1,15 @@
 import torch
 from torchvision.transforms.functional import crop
+from tqdm import tqdm
 
 class ImageEncoder(object):
-    def __init__(self, torch_model, transform=None, batch_size=100):
+    def __init__(self, torch_model, transform=None, batch_size=100,
+        verbose=False):
         self.model = torch_model
         self.transform = transform
         self.bs = batch_size
+
+        self.verbose = verbose
 
     def _get_model(self):
         return self.model, next(self.model.parameters()).device
@@ -24,10 +28,13 @@ class ImageEncoder(object):
 
         image_tensors = image_tensors.to(device)
 
+        it = list(range(0, n_img, self.bs))
+        if self.verbose:
+            it = tqdm(it)
         with torch.no_grad():
             embs = []
             n_img = image_tensors.size(0)
-            for i_start in range(0, n_img, self.bs):
+            for i_start in it:
                 i_end = i_start + self.bs
                 emb = model(
                     image_tensors[i_start:i_end]
