@@ -1,6 +1,7 @@
 from bounding_box import bounding_box as bb
 import cv2
 import numpy as np
+from PIL import Image
 
 def from_PIL_to_cv(image):
     image = np.array(image, dtype=np.uint8)
@@ -11,6 +12,15 @@ def from_PIL_to_cv(image):
     elif image.shape[3] == 4:
         image = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)
     return image
+
+def from_cv_to_PIL(image):
+    image = image.copy()
+    if image.shape[2] == 3:
+        image = image[:,:,::-1]
+    elif image.shape[2] == 4:
+        image = image[:,:,[2,1,0,3]]
+    return Image.fromarray(image)
+
 
 def add_bounding_box(image, bb_info):
     xmin, ymin, xmax, ymax = bb_info["coordinates"]

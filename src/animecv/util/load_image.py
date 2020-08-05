@@ -1,7 +1,10 @@
 import glob
 import os
 
+import cv2
 from PIL import Image
+
+from .display import from_cv_to_PIL
 
 IMAGE_EXTENSIONS = ["jpg", "png"]
 def get_all_image_filenames_from_directory(self, directory):
@@ -20,3 +23,20 @@ def load_image(filename):
     except UserWarning as e:
         print(filename)
         input("Something wrong happens while loading image: {} {}".format(filename, str(e)))
+
+def load_video(filename):
+    cap = cv2.VideoCapture(filename)
+
+    if not cap.isOpened():
+        raise Exception(f"Cannot open video: {filename}")
+
+    frames = []
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if ret:
+            frames.append(from_cv_to_PIL(frame))
+        else:
+            break
+    
+    cap.release()
+    return frames
