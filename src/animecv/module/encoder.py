@@ -27,6 +27,7 @@ class ImageEncoder(object):
         model.eval()
 
         image_tensors = image_tensors.to(device)
+        n_img = image_tensors.size(0)
 
         it = list(range(0, n_img, self.bs))
         if self.verbose:
