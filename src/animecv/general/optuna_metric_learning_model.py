@@ -56,7 +56,18 @@ class OML_ImageFolder_Pretrained(nn.Module):
         return x
 
 def create_OML_ImageFolder_Encoder(model_dir):
+    transform = [
+        transforms.Resize((224,224)),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
+    ]
+    transform = transforms.Compose(transform)
+
     return ImageEncoder(
         OML_ImageFolder_Pretrained(model_dir),
-        Similarity(sim_func="L2")
+        transform
     )
