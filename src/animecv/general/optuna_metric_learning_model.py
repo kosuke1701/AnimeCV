@@ -42,6 +42,8 @@ def load_OML_ImageFolder_models(model_dir):
 
 class OML_ImageFolder_Pretrained(nn.Module):
     def __init__(self, model_dir):
+        super().__init__()
+
         trunk, embedder = load_OML_ImageFolder_models(model_dir)        
 
         self.trunk = trunk
