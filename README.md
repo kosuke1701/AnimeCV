@@ -17,6 +17,10 @@ pip install git+https://github.com/kosuke1701/AnimeCV.git
 The task is to identify which character is depicted in a picture given a set of reference pictures for each character.
 [Example code](examples/character_re_identification.py)
 
+* **Update on 2021.01.11**
+  - I released new pre-trained model for character face embedding!
+  - See [release](https://github.com/kosuke1701/AnimeCV/releases/tag/0111_best_randaug) and demo  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/kosuke1701/AnimeCV/blob/master/examples/demo_oml.ipynb).
+
 ### Object detection
 
 The task is to detect objects in a picture and return bounding boxes around the objects.
