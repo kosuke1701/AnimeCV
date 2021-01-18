@@ -26,6 +26,9 @@ The task is to identify which character is depicted in a picture given a set of 
 The task is to detect objects in a picture and return bounding boxes around the objects.
 
 * Face detector. [Example code](examples/character_face_detection.py)
+  - **Update on 2021.01.18**
+    - I released [Yet Another Character Face Annotations on Danbooru2019](https://github.com/kosuke1701/AnimeCV/releases/tag/0.0) using this pre-trained model!
+    - Automatically annotated face bounding boxes for the SFW 512px downscaled subset of [Danbooru2019 dataset](https://www.gwern.net/Danbooru2019).
 
 ## Note
 
